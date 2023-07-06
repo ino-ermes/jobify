@@ -21,13 +21,18 @@ function JobsContainer() {
     if(totalJobs === 0) {
         return (
             <Wrapper>
-                <h1>吐き気がする</h1>
+                <h1>吐き気がする {page}</h1>
             </Wrapper>
         )
     }
 
     return (
         <Wrapper>
+            <div className='jobs'>
+                {jobs.map((value) => {
+                    return <Job key={value._id} {...value}></Job>
+                })}
+            </div>
         </Wrapper>
     );
 }

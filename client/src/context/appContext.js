@@ -225,8 +225,16 @@ function AppProvider({ children }) {
         clearAlert();
     }
 
+    const setEditJob = (id) => {
+        console.log('editing ', id);
+    };
+
+    const deleteJob = (id) => {
+        console.log('delete ', id);
+    };
+
     return (
-        <AppContext.Provider value={{...state, getJobs, createJob, clearValues, handleChange, displayAlert, switchRegisterLogin, registerUser, loginUser, toggleSidebar, logoutUser, updateUser}}>
+        <AppContext.Provider value={{...state, setEditJob, deleteJob, getJobs, createJob, clearValues, handleChange, displayAlert, switchRegisterLogin, registerUser, loginUser, toggleSidebar, logoutUser, updateUser}}>
             {children}
         </AppContext.Provider>
     );
