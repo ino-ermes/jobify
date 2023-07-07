@@ -20,6 +20,11 @@ import {
     CREATE_JOB_SUCESS,
     GET_JOBS_BEGIN,
     GET_JOBS_SUCCESS,
+    SET_EDIT_JOB,
+    DELETE_JOB_BEGIN,
+    EDIT_JOB_BEGIN,
+    EDIT_JOB_ERROR,
+    EDIT_JOB_SUCCESS,
 } from './action';
 
 import {initialState} from './appContext';
@@ -77,6 +82,18 @@ function reducer(state, action) {
             return {...state, isLoading: true, showAlert: false};
         case GET_JOBS_SUCCESS:
             return {...state, isLoading: false, jobs: action.payload.jobs, totalJobs: action.payload.totalJobs, numOfPages: action.payload.numOfPages};
+        case SET_EDIT_JOB:
+            const job = state.jobs.find((value) => {return value._id === action.payload.id});
+            const {_id, position, company, jobLocation, jobType, status} = job;
+            return {...state, isEditing: true, editJobId: _id, position, company, jobLocation, jobType, status};
+        case DELETE_JOB_BEGIN:
+            return {...state, isLoading: true};
+        case EDIT_JOB_BEGIN:
+            return {...state, isLoading: true};
+        case EDIT_JOB_SUCCESS:
+            return {...state, isLoading: false, showAlert: true, alertType: 'success', alertText: 'Where there the will there the way'};
+        case EDIT_JOB_ERROR:
+            return {...state, isLoading: false, showAlert: true, alertType: 'danger', alertText: action.payload.msg};
         default:
             throw Error(`no such action: ${action.type}`);
     }
