@@ -24,3 +24,6 @@ export const DELETE_JOB_BEGIN = 'delete-job-begin';
 export const EDIT_JOB_BEGIN = 'edit-job-begin';
 export const EDIT_JOB_SUCCESS = 'edit-job-success';
 export const EDIT_JOB_ERROR = 'edit-job-error';
+export const SHOW_STATS_BEGIN = 'show-stats-begin';
+export const SHOW_STATS_SUCCESS = 'show-stats-success';
+export const CLEAR_FILTERS = 'clear-filters';

@@ -25,6 +25,9 @@ import {
     EDIT_JOB_BEGIN,
     EDIT_JOB_ERROR,
     EDIT_JOB_SUCCESS,
+    SHOW_STATS_BEGIN,
+    SHOW_STATS_SUCCESS,
+    CLEAR_FILTERS,
 } from './action';
 
 import {initialState} from './appContext';
@@ -94,6 +97,12 @@ function reducer(state, action) {
             return {...state, isLoading: false, showAlert: true, alertType: 'success', alertText: 'Where there the will there the way'};
         case EDIT_JOB_ERROR:
             return {...state, isLoading: false, showAlert: true, alertType: 'danger', alertText: action.payload.msg};
+        case SHOW_STATS_BEGIN:
+            return {...state, isLoading: true, showAlert: false};
+        case SHOW_STATS_SUCCESS:
+            return {...state, isLoading: false, stats: action.payload.stats, monthlyApplications: action.payload.monthlyApplications}
+        case CLEAR_FILTERS:
+            return {...state, search: '', searchStatus: 'all', searchType: 'all', sort: 'latest'};
         default:
             throw Error(`no such action: ${action.type}`);
     }

@@ -26,6 +26,9 @@ import {
     EDIT_JOB_BEGIN,
     EDIT_JOB_ERROR,
     EDIT_JOB_SUCCESS,
+    SHOW_STATS_BEGIN,
+    SHOW_STATS_SUCCESS,
+    CLEAR_FILTERS,
 } from './action';
 import reducer from './reducer';
 import axios from 'axios';
@@ -57,6 +60,13 @@ const initialState = {
     totalJobs: 0,
     page: 1,
     numOfPages: 1,
+    stats: {},
+    monthlyApplications: [],
+    search: '',
+    searchStatus: 'all',
+    searchType: 'all',
+    sort: 'latest',
+    sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
 };
 
 const AppContext = createContext();
@@ -217,15 +227,18 @@ function AppProvider({ children }) {
     };
 
     const getJobs = async () => {
-        let url = `/jobs`;
+        const {search, searchStatus, searchType, sort} = state;
+        let url = `/jobs?status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
+        if(search) {
+            url += `&search=${search}`;
+        }
         dispatch({type: GET_JOBS_BEGIN});
         try {
             const {data} = await authFetch.get(url);
             const {jobs, totalJobs, numOfPages} = data;
             dispatch({type: GET_JOBS_SUCCESS, payload: {jobs, totalJobs, numOfPages}});
         } catch(error) {
-            //logoutUser();
-            console.log(error.response);
+            logoutUser();
         }
         clearAlert();
     }
@@ -259,8 +272,26 @@ function AppProvider({ children }) {
         }
     };
 
+    const showStats = async () => {
+        dispatch({type: SHOW_STATS_BEGIN});
+        try {
+            const {data} = await authFetch('/jobs/stats');
+            dispatch({type: SHOW_STATS_SUCCESS, payload: {
+                stats: data.defaultStats,
+                monthlyApplications: data.monthlyApplications,
+            }});
+        } catch(error) {
+            logoutUser();
+        }
+        clearAlert();
+    };
+
+    const clearFilters = () => {
+        dispatch({type: CLEAR_FILTERS});
+    }
+
     return (
-        <AppContext.Provider value={{...state, editJob, setEditJob, deleteJob, getJobs, createJob, clearValues, handleChange, displayAlert, switchRegisterLogin, registerUser, loginUser, toggleSidebar, logoutUser, updateUser}}>
+        <AppContext.Provider value={{...state, clearFilters, showStats, editJob, setEditJob, deleteJob, getJobs, createJob, clearValues, handleChange, displayAlert, switchRegisterLogin, registerUser, loginUser, toggleSidebar, logoutUser, updateUser}}>
             {children}
         </AppContext.Provider>
     );
