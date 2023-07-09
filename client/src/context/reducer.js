@@ -28,6 +28,7 @@ import {
     SHOW_STATS_BEGIN,
     SHOW_STATS_SUCCESS,
     CLEAR_FILTERS,
+    CHANGE_PAGE
 } from './action';
 
 import {initialState} from './appContext';
@@ -63,7 +64,7 @@ function reducer(state, action) {
         case UPDATE_USER_ERROR:
             return {...state, isLoading: false, showAlert: true, alertType: 'danger', alertText: action.payload.msg};
         case HANDLE_CHANGE:
-            return {...state, [action.payload.name]: action.payload.value};
+            return {...state, [action.payload.name]: action.payload.value, page: 1};
         case CLEAR_VALUES:
             const defaultState = {
                 isEditing: false,
@@ -103,6 +104,8 @@ function reducer(state, action) {
             return {...state, isLoading: false, stats: action.payload.stats, monthlyApplications: action.payload.monthlyApplications}
         case CLEAR_FILTERS:
             return {...state, search: '', searchStatus: 'all', searchType: 'all', sort: 'latest'};
+        case CHANGE_PAGE:
+            return {...state, page: action.payload.page};
         default:
             throw Error(`no such action: ${action.type}`);
     }

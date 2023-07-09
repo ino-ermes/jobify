@@ -29,6 +29,7 @@ import {
     SHOW_STATS_BEGIN,
     SHOW_STATS_SUCCESS,
     CLEAR_FILTERS,
+    CHANGE_PAGE
 } from './action';
 import reducer from './reducer';
 import axios from 'axios';
@@ -227,8 +228,8 @@ function AppProvider({ children }) {
     };
 
     const getJobs = async () => {
-        const {search, searchStatus, searchType, sort} = state;
-        let url = `/jobs?status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
+        const {search, searchStatus, searchType, sort, page} = state;
+        let url = `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
         if(search) {
             url += `&search=${search}`;
         }
@@ -288,10 +289,14 @@ function AppProvider({ children }) {
 
     const clearFilters = () => {
         dispatch({type: CLEAR_FILTERS});
+    };
+
+    const changePage = (newPage) => {
+        dispatch({type: CHANGE_PAGE, payload: {page: newPage}})
     }
 
     return (
-        <AppContext.Provider value={{...state, clearFilters, showStats, editJob, setEditJob, deleteJob, getJobs, createJob, clearValues, handleChange, displayAlert, switchRegisterLogin, registerUser, loginUser, toggleSidebar, logoutUser, updateUser}}>
+        <AppContext.Provider value={{...state, changePage, clearFilters, showStats, editJob, setEditJob, deleteJob, getJobs, createJob, clearValues, handleChange, displayAlert, switchRegisterLogin, registerUser, loginUser, toggleSidebar, logoutUser, updateUser}}>
             {children}
         </AppContext.Provider>
     );

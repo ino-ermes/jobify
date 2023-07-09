@@ -8,7 +8,7 @@ function SharedLayout() {
             <main className='dashboard'>
                 <SmallSidebar />
                 <BigSidebar />
-            <div style={{minHeight: '1000px'}}>
+            <div>
                 <Navbar />
                 <div className='dashboard-page'>
                     <Outlet />

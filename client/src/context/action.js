@@ -27,3 +27,4 @@ export const EDIT_JOB_ERROR = 'edit-job-error';
 export const SHOW_STATS_BEGIN = 'show-stats-begin';
 export const SHOW_STATS_SUCCESS = 'show-stats-success';
 export const CLEAR_FILTERS = 'clear-filters';
+export const CHANGE_PAGE = 'change-page';
