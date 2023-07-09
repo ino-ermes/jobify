@@ -6,7 +6,7 @@ import Wrapper from '../assets/wrappers/JobsContainer';
 import PageBntContainner from './PageBtnContainer';
 
 function JobsContainer() {
-    const {getJobs, jobs, isLoading, page, totalJobs, search, searchStatus, searchType, sort} = useAppContext();
+    const {getJobs, jobs, isLoading, page, totalJobs, search, searchStatus, searchType, sort, numOfPages} = useAppContext();
     useEffect(() => {
         getJobs();
     }, [search, searchStatus, searchType, sort, page]);
@@ -35,7 +35,7 @@ function JobsContainer() {
                     return <Job key={value._id} {...value}></Job>
                 })}
             </div>
-            <PageBntContainner />
+            {numOfPages > 1 && <PageBntContainner />}
         </Wrapper>
     );
 }

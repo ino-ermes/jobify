@@ -1,11 +1,12 @@
 import {FormRow, FormRowSelect} from '.';
 import { useAppContext } from '../context/appContext';
 import Wrapper from '../assets/wrappers/SearchContainer';
+import useDebounce from '../utils/useDebounce';
+import { useEffect, useState } from 'react';
 
 function SearchContainer() {
     const {
         isLoading,
-        search,
         searchStatus,
         searchType,
         sort,
@@ -26,6 +27,14 @@ function SearchContainer() {
         clearFilters();
     }
 
+    const [search, setSearch] = useState('');
+
+    const searchDebounce = useDebounce(search, 700);
+
+    useEffect(() => {
+        handleSearch({target: {name: 'search', value: searchDebounce}});
+    }, [searchDebounce]);
+
     return (
         <Wrapper>
             <form className='form'>
@@ -35,7 +44,7 @@ function SearchContainer() {
                         type='text'
                         name='search'
                         value={search}
-                        onChange={handleSearch}
+                        onChange={(e) => {setSearch(e.target.value)}}
                     />
                     <FormRowSelect 
                         lableText='job status'
