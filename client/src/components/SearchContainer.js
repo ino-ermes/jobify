@@ -1,8 +1,7 @@
 import {FormRow, FormRowSelect} from '.';
 import { useAppContext } from '../context/appContext';
 import Wrapper from '../assets/wrappers/SearchContainer';
-import useDebounce from '../utils/useDebounce';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 function SearchContainer() {
     const {
@@ -24,16 +23,29 @@ function SearchContainer() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setLocalSearch('');
         clearFilters();
     }
 
-    const [search, setSearch] = useState('');
+    const [localSearch, setLocalSearch] = useState('');
 
-    const searchDebounce = useDebounce(search, 700);
+    const debounce = (fn) => {
+        let timerId;
+        return (e) => {
+            if(isLoading) return;
+            clearTimeout(timerId);
+            setLocalSearch(e.target.value);
+            timerId = setTimeout(() => {
+                fn(e);
+            }, (1000));
+        }
+    };
 
-    useEffect(() => {
-        handleSearch({target: {name: 'search', value: searchDebounce}});
-    }, [searchDebounce]);
+    const optimizedDebounde = useMemo(() => {
+        return debounce((e) => {
+            handleChange({name: e.target.name, value: e.target.value});
+        });
+    }, []);
 
     return (
         <Wrapper>
@@ -43,8 +55,8 @@ function SearchContainer() {
                     <FormRow 
                         type='text'
                         name='search'
-                        value={search}
-                        onChange={(e) => {setSearch(e.target.value)}}
+                        value={localSearch}
+                        onChange={optimizedDebounde}
                     />
                     <FormRowSelect 
                         lableText='job status'
