@@ -5,6 +5,13 @@ import express from 'express';
 const app = express();
 app.use(express.json());
 
+
+import path, {dirname} from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+app.use(express.static(path.resolve(__dirname, './client/build')));
+
 // logger
 import morgan from 'morgan';
 
@@ -19,6 +26,9 @@ import notFoundMiddleWare from './middleware/not-found.js';
 import errorHandlerMiddleware from './middleware/error-handler.js';
 import authenticateUser from './middleware/auth.js';
 import cookieParse from 'cookie-parser';
+import helmet from 'helmet';
+import xss from 'xss-clean';
+import mongoSanitize from 'express-mongo-sanitize';
 
 // router
 import authRouter from './routes/authRoutes.js';
@@ -30,9 +40,16 @@ if(process.env.NODE_ENV !== 'production') {
 
 app.use(cookieParse());
 
+app.use(helmet());
+app.use(xss());
+app.use(mongoSanitize());
+
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/jobs', authenticateUser, jobsRouter);
 
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, './client/build', 'index.html'));
+});
 
 app.use(notFoundMiddleWare);
 app.use(errorHandlerMiddleware);
