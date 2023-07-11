@@ -21,6 +21,7 @@ export const GET_JOBS_BEGIN = 'get-jobs-begin';
 export const GET_JOBS_SUCCESS = 'get-jobs-success';
 export const SET_EDIT_JOB = 'set-edit-job';
 export const DELETE_JOB_BEGIN = 'delete-job-begin';
+export const DELETE_JOB_ERROR = 'delete-job-error';
 export const EDIT_JOB_BEGIN = 'edit-job-begin';
 export const EDIT_JOB_SUCCESS = 'edit-job-success';
 export const EDIT_JOB_ERROR = 'edit-job-error';

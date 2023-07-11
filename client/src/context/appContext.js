@@ -23,6 +23,7 @@ import {
     GET_JOBS_SUCCESS,
     SET_EDIT_JOB,
     DELETE_JOB_BEGIN,
+    DELETE_JOB_ERROR,
     EDIT_JOB_BEGIN,
     EDIT_JOB_ERROR,
     EDIT_JOB_SUCCESS,
@@ -269,7 +270,8 @@ function AppProvider({ children }) {
             await authFetch.delete(`/jobs/${id}`)
             getJobs();
         } catch(error) {
-            logoutUser();
+            dispatch({type: DELETE_JOB_ERROR, payload: {msg: error.response.data.msg}});
+            clearAlert();
         }
     };
 

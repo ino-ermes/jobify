@@ -22,6 +22,7 @@ import {
     GET_JOBS_SUCCESS,
     SET_EDIT_JOB,
     DELETE_JOB_BEGIN,
+    DELETE_JOB_ERROR,
     EDIT_JOB_BEGIN,
     EDIT_JOB_ERROR,
     EDIT_JOB_SUCCESS,
@@ -92,6 +93,8 @@ function reducer(state, action) {
             return {...state, isEditing: true, editJobId: _id, position, company, jobLocation, jobType, status};
         case DELETE_JOB_BEGIN:
             return {...state, isLoading: true};
+        case DELETE_JOB_ERROR:
+            return {...state, isLoading: false, showAlert: true, alertType: 'danger', alertText: action.payload.msg};
         case EDIT_JOB_BEGIN:
             return {...state, isLoading: true};
         case EDIT_JOB_SUCCESS:

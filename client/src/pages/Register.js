@@ -46,7 +46,15 @@ function Register() {
     const handleSwitch = (e) => {
         e.preventDefault();
         switchRegisterLogin();
-    }
+    };
+
+    const loginTestUse = (e) => {
+        e.preventDefault();
+        loginUser({
+            email: 'stairwaytoheaven@shin.sekai',
+            password: 'stairwaytoheaven@shin.sekai'
+        });
+    };
 
     return (
         <Wrapper className='full-page'>
@@ -58,6 +66,13 @@ function Register() {
                 <FormRow type='email' name='email' value={values.email} onChange={handleChange}/>
                 <FormRow type='password' name='password' value={values.password} onChange={handleChange}/>
                 <button disabled={isLoading} className='btn btn-block' onClick={onSubmit}>{isMember ? 'login' : 'register'}</button>
+                <button 
+                    disabled={isLoading} 
+                    className='btn btn-block btn-hipster'
+                    onClick={loginTestUse}
+                >
+                    test user
+                    </button>
                 {isMember ? <p>Not a member yet? <button className='member-btn' onClick={handleSwitch}>Register</button></p> :
                                 <p>Already have an account? <button className='member-btn' onClick={handleSwitch}>Login</button></p>}
             </form>
