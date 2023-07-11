@@ -1,9 +1,16 @@
 import main from '../assets/images/main.svg';
 import Logo from '../components/Logo';
 import Wrapper from '../assets/wrappers/LandingPage';
-import {Link} from 'react-router-dom';
+import {Link, Navigate} from 'react-router-dom';
+import { useAppContext } from '../context/appContext';
 
 function Landing() {
+    const {user} = useAppContext();
+    if(user) {
+        return (
+            <Navigate to='/' />
+        );
+    }
     return (
         <Wrapper>
             <nav><Logo /></nav>

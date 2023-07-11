@@ -1,8 +1,14 @@
-import { Navigate } from "react-router-dom";
-import { useAppContext } from "../context/appContext";
+import { Navigate } from 'react-router-dom';
+import { useAppContext } from '../context/appContext';
+import {Loading} from '../components';
 
 function ProtectedRoute({children}) {
-    const {user} = useAppContext();
+    const {user, loadingUser} = useAppContext();
+
+    if(loadingUser) {
+        return <Loading center/>
+    }
+
     if(user) {
         return children;
     } else {

@@ -1,6 +1,7 @@
 import User from '../models/User.js';
 import {BadRequestError, UnauthenticatedError} from '../errors/index.js';
 import {StatusCodes} from 'http-status-codes';
+import attachCookie from '../utils/attachCookie.js';
 
 const register = async (req, res) => {
     const {email, name, password} = req.body;
@@ -9,6 +10,8 @@ const register = async (req, res) => {
     }
     const user = await User.create(req.body);
     const token = user.createJWT();
+
+    attachCookie({res, token});
 
     res.status(StatusCodes.OK)
     .json({
@@ -19,7 +22,6 @@ const register = async (req, res) => {
             location: user.location,
             id: user._id,
         },
-        token,
         location: user.location,
     });
 };
@@ -39,8 +41,10 @@ const login = async (req, res) => {
         throw new UnauthenticatedError('パスワードは間違っている');
     }
     const token = user.createJWT();
+    attachCookie({res, token});
+
     user.password = undefined;
-    res.status(StatusCodes.OK).json({user, token, location: user.location});
+    res.status(StatusCodes.OK).json({user, location: user.location});
 };
 
 const updateUser = async (req, res) => {
@@ -59,8 +63,22 @@ const updateUser = async (req, res) => {
 
     await user.save();
     const token = user.createJWT();
+    attachCookie({res, token});
 
-    res.status(StatusCodes.OK).json({user, token, location: user.location});
+    res.status(StatusCodes.OK).json({user, location: user.location});
 };
 
-export {register, login, updateUser};
+const getUserInfo = async (req, res) => {
+    const user = await User.findOne({_id: req.user.userId});
+    res.status(StatusCodes.OK).json({user, location: user.location});
+};
+
+const logoutUser = (req, res) => {
+    res.cookie('token', 'logout', {
+        httpOnly: true,
+        expires: new Date(Date.now())
+    });
+    res.status(StatusCodes.OK).json({msg: '働かざる者は食うべからず'});
+}
+
+export {getUserInfo, logoutUser, register, login, updateUser};

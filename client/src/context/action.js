@@ -29,3 +29,5 @@ export const SHOW_STATS_BEGIN = 'show-stats-begin';
 export const SHOW_STATS_SUCCESS = 'show-stats-success';
 export const CLEAR_FILTERS = 'clear-filters';
 export const CHANGE_PAGE = 'change-page';
+export const GET_USER_BEGIN = 'get-user-begin';
+export const GET_USER_SUCCESS = 'get-user-success';

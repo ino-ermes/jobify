@@ -29,7 +29,9 @@ import {
     SHOW_STATS_BEGIN,
     SHOW_STATS_SUCCESS,
     CLEAR_FILTERS,
-    CHANGE_PAGE
+    CHANGE_PAGE,
+    GET_USER_BEGIN,
+    GET_USER_SUCCESS
 } from './action';
 
 import {initialState} from './appContext';
@@ -45,23 +47,23 @@ function reducer(state, action) {
         case REGISTER_USER_BEGIN:
             return {...state, isLoading: true};
         case REGISTER_USER_SUCCESS:
-            return {...state, isLoading: false, token: action.payload.token, user: action.payload.user, userLocation: action.payload.location, jobLocation: action.payload.location, showAlert: true, alertType: 'success', alertText: 'ログイン成功しました'};
+            return {...state, isLoading: false, user: action.payload.user, userLocation: action.payload.location, jobLocation: action.payload.location, showAlert: true, alertType: 'success', alertText: 'ログイン成功しました'};
         case REGISTER_USER_ERROR:
             return {...state, isLoading: false, showAlert: true, alertType: 'danger', alertText: action.payload.msg};
         case LOGIN_USER_BEGIN:
             return {...state, isLoading: true};
         case LOGIN_USER_SUCCESS:
-            return {...state, isLoading: false, token: action.payload.token, user: action.payload.user, userLocation: action.payload.location, jobLocation: action.payload.location, showAlert: true, alertType: 'success', alertText: 'ログイン成功しました'};
+            return {...state, isLoading: false, user: action.payload.user, userLocation: action.payload.location, jobLocation: action.payload.location, showAlert: true, alertType: 'success', alertText: 'ログイン成功しました'};
         case LOGIN_USER_ERROR:
             return {...state, isLoading: false, showAlert: true, alertType: 'danger', alertText: action.payload.msg};
         case TOGGLE_SIDEBAR:
             return {...state, showSidebar: !state.showSidebar};
         case LOGOUT_USER:
-            return {...initialState, user: null, token: null, userLocation: '', jobLocation: ''};
+            return {...initialState, user: null, userLocation: '', jobLocation: '', loadingUser: false};
         case UPDATE_USER_BEGIN:
             return {...state, isLoading: true};
         case UPDATE_USER_SUCCESS:
-            return {...state, isLoading: false, token: action.payload.token, user: action.payload.user, userLocation: action.payload.location, jobLocation: action.payload.location, showAlert: true, alertType: 'success', alertText: '更新成功しました'};
+            return {...state, isLoading: false, user: action.payload.user, userLocation: action.payload.location, jobLocation: action.payload.location, showAlert: true, alertType: 'success', alertText: '更新成功しました'};
         case UPDATE_USER_ERROR:
             return {...state, isLoading: false, showAlert: true, alertType: 'danger', alertText: action.payload.msg};
         case HANDLE_CHANGE:
@@ -109,6 +111,10 @@ function reducer(state, action) {
             return {...state, search: '', searchStatus: 'all', searchType: 'all', sort: 'latest'};
         case CHANGE_PAGE:
             return {...state, page: action.payload.page};
+        case GET_USER_BEGIN:
+            return {...state, loadingUser: true};
+        case GET_USER_SUCCESS:        
+            return {...state, loadingUser: false, user: action.payload.user, userLocation: action.payload.location, jobLocation: action.payload.location};
         default:
             throw Error(`no such action: ${action.type}`);
     }
