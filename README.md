@@ -1,12 +1,11 @@
 # Website
 - [Jobify](https://jobify-yg4l.onrender.com).
-- Because it's free hosting so have to wait around 30 seconds for the first access.
+- Because it is free hosting, you have to wait about 30 seconds for the first access.
 # Technology
-- MERN Stack(ReactJs, Express - NodeJs, MongoDB)
+- MERN Stack(MongoDB, Express, React.js, NodeJs).
 # About project
-- Just a very simple website that make use of MERN.
 - Authentication with JWT.
 - CRUD jobs.
-- Query jobs: search by name, type, status; sort.
+- Query jobs: search by name, type, status and sort.
 - Pagination.
-- Debounce on search bar(very simple one :D).
+- Debounce on search bar.
